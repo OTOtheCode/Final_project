@@ -1,14 +1,15 @@
-from menu_items import main_manu, MENU_clinic_accounting, MENU_clinic_mangment, MENU_registration_desk, SUB_menu_doctor, SUB_menu_tasks, SUB_menu_researches
-from patients import Patient
-from services import Researches, Services
-from staff import Staff, Salaries
+from menu_items import main_manu
+from patients import Patients
+from staff import Staff
 from tasks import Tasks
-#მთავარი მენიუ
 
+#კლასი მთავარი მენიუ
 class MainMenu:
     def __init__(self):
         self.manu = main_manu
-        
+        self.registrattion_desk_menu = RegistrationDeskMenu()
+        self.management_menu = ClinicManagementMenu()
+        self.accounting_menu = ClinicAccountingMenu()
     def display(self):
         for key, value in self.manu.items():
             print(f"{key}: {value}")
@@ -17,52 +18,224 @@ class MainMenu:
         choice = input("Please choose an option: ")
         return choice
 
-    def handle_choice(self, choice):
+    def menu_select(self, choice):
         if choice == "1":
-            RegistrationDeskMenu.display()
+            self.registrattion_desk_menu.display()
         elif choice == "2":
-            ClinicManagementMenu.display()
+            self.management_menu.display()
         elif choice == "3":
-            ClinicAccountingMenu.display()
+            self.accounting_menu.display()
         elif choice == "4":
             print("Exiting the system. Goodbye!")
         else:
             print("Invalid choice, please try again.")
-#რეგისტრატორის მენიუ
 
+#რეგისტრატორის მენიუ
 class RegistrationDeskMenu:
     def __init__(self):
-        self.menu = MENU_registration_desk
-        
+        self.patient = Patients()
+           
     def display(self):
-        for key, value in self.menu.items():
-            print(f"{key}: {value}")
-    
+        while True:
+            print("1. Register new Patient") 
+            print("2. Open medical history") 
+                                     
+            print("3. Transfer patient to doctor")
+                                     
+            print("4. Reaserch Service")   
+                           
+            print("5. View full medical history") 
+            print("6. View only researches") 
+            print("7. Register appointment : ") 
+        
+            print("8. Exit")
+
+            choice = input("Please choose an option: ")
+            if choice == "8":
+                    break
+            else:
+                self.menu_select(choice)
     def get_user_choice(self):
         choice = input("Please choose an option: ")
         return choice
 
-    def handle_choice(self, choice):
+    def menu_select(self, choice):
+        
         if choice == "1":
-            Patient.register()
+            id_inp = input('Please enter patients ID number: ' )
+            if id_inp.startswith('0'):
+                id=id_inp
+            else:
+                id=int(id_inp)
+                       
+            name = str(input('Please enter patients name: '))
+            surname =str(input('Please enter patients surname: '))
+            date_of_birth = input('please enter date of birth (y-m-d): ')
+            insurance_covarage = int(input('Please enter patients insurance covarage: '))
+            patient_history = str(input('please enter information about patients diseas amd cpmplains: '))
+            self.patient.register(id, name,surname, date_of_birth, insurance_covarage, patient_history)
         elif choice == "2":
-            Patient.open_history()
+            pass
+            #Patient.open_history()
         elif choice == "3":
-            Patient.add_to_doctor()
+            pass
+            #Patient.add_to_doctor()
         elif choice == "4":
-            ResearchesMenu.display()
+            
+            pass
+            #ResearchesMenu.display()
         elif choice == "5":
-            Patient.view_hist()
+            pass
+            #Patient.view_hist()
         elif choice == "6":
-            Patient.view_research()
+            pass
+            #Patient.view_research()
         elif choice == "7":
-            Patient.appointment()
+            pass
+            #Patient.appointment()
         elif choice == "8":
             print("Exiting the system. Goodbye!")
         else:
             print("Invalid choice, please try again.")
 
+#მენეჯმენტის მენიუ
 
+class ClinicManagementMenu:
+    def __init__(self):
+        self.staff = Staff()       
+    def display(self):
+        while True:
+            print("1. View full List of Staff: ") #პაციენტის რეგისტრაციია. უნდა შეგვაყვანინოს სახელი, გვარი, პირადი ნომერი, დაბადების წელი, ტელეფონის ნომერი, აგნერირებს უნიკალურ აიდის, შეინახოს ინფორმაცია ფაილში. 
+            print("2. View List of support staff on duty: ") #იკითხოს რეგისტრირებულია თუ არა პაციენტი, თუ კი მოითხოვოს პირადი ნომერი და შემდეგ შეიყვანოს ანამნეზის მონაცემები. 
+                                     #თუ არა გაიაროს რეგისტრაციის პროცესი და შემდეგ ანამნეზის მონაცემბები (ინფორმაცია შეინახოს სამედიცინო ისტორიის ფაილში)
+            print("3. View List of doctors on duty: ")# გადაამისამართოს პაციენტი ექიმთან, პაციენტის მონაცემებს უნდა გაყვეს სამედიცინო ისტორია. 
+                                      # ექიმის ქვე მენიუ - დაამატოს პაციენტის ისტორიას დანიშნულება. ეს ინფორმაცია ავტომატურად უნდა აისახის სამედიცინო ისტორიაში.
+            print("4. View List of nuerses on duty: ")  #შეგვყავს პაციენტის პირადი ნომერი ან UID, გამოდის ქვე მენიუ სადაც ვირჩევთ თუ რა კვლევა უნდა ჩაუტარდეს პაციენტს, 
+                           #პროგრამა გვეკითხება დავამატოთ თუ არა ერთის გარდა კიდევ სხვა კვლევა. შემდეგ იღებს მონაცემებს წინასწარ გამზადებული ბაზიდან. ანგარიშობს გადასახდელ თანხას 
+                           #და ბეჭდავს ინფორმაციას. ამატებს პაციენტის ისტორიას კვლევების შესახებ მონაცემებს.
+            print("5. Create task and asigne personal to it: ") #პირადი ნომრით ეძებს პაციენტის სამედიცინო ისტორიას და ბეჭდავს სრულ მონაცემებს.
+            print("6. Add new staff memeber: ") #პირადი ნომრით ეძებს მხოლოდ ინფორმაციას კველების შესახებ და ბეჭდავს.
+            print("7. Remove staff memeber: ") # პაციენტს ჩაწერს ექიმთან, სმს-ის სახით გაუგზავნის ინფორმაციას პაციენტს
+        
+            print("8. Exit")
+
+
+            choice = input("Please choose an option: ")
+            if choice == "8":
+                break
+            else:
+                self.menu_select(choice)
+
+    def get_user_choice(self):
+        choice = input("Please choose an option: ")
+        return choice
+
+    def menu_select(self, choice):
+        if choice == "1":
+            Staff.view_all_staff_members()
+        elif choice == "2":
+            Staff.view_support_staff_on_duty()
+        elif choice == "3":
+            Staff.view_all_staff_members()
+        elif choice == "4":
+            Staff.View_nurses_on_Duty()
+        elif choice == "5":
+            TasksSubMenu.display()
+        elif choice == "6":
+            id_inp = input('Please enter ID number: ' )
+            if id_inp.startswith('0'):
+                id=id_inp
+            else:
+                id=int(id_inp)
+                     
+            name = str(input('Please enter name: ').lower())
+            surname =str(input('Please enter  surname: ').lower())
+            position = input('Please enter position: ').lower()
+            salary= float(input('please enter salary: '))
+            status= input('please enter status (on duty/ not on duty): ').lower()
+            assigned_task = input('please enter what task do you give to this person: ')
+            self.staff.add_staff_member(id,name,surname,position,salary, status,assigned_task)
+        elif choice == "7":
+            Staff.remove_staff_member()
+        elif choice == "8":
+            print("Exiting the system. Goodbye!")
+        else:
+            print("Invalid choice, please try again.")        
+
+
+#ბუღალტერის მენიუ
+
+
+class ClinicAccountingMenu:
+            
+    def display(self):
+        while True:
+            print("1. Calculate cost of the procedure: ") #პაციენტის რეგისტრაციია. უნდა შეგვაყვანინოს სახელი, გვარი, პირადი ნომერი, დაბადების წელი, ტელეფონის ნომერი, აგნერირებს უნიკალურ აიდის, შეინახოს ინფორმაცია ფაილში. 
+            print("2. Calculate salary for staff member: ") #იკითხოს რეგისტრირებულია თუ არა პაციენტი, თუ კი მოითხოვოს პირადი ნომერი და შემდეგ შეიყვანოს ანამნეზის მონაცემები. 
+                                     #თუ არა გაიაროს რეგისტრაციის პროცესი და შემდეგ ანამნეზის მონაცემბები (ინფორმაცია შეინახოს სამედიცინო ისტორიის ფაილში)
+            print("3. View services that hospital is providing: ")# გადაამისამართოს პაციენტი ექიმთან, პაციენტის მონაცემებს უნდა გაყვეს სამედიცინო ისტორია. 
+                                      # ექიმის ქვე მენიუ - დაამატოს პაციენტის ისტორიას დანიშნულება. ეს ინფორმაცია ავტომატურად უნდა აისახის სამედიცინო ისტორიაში.
+            print("4. View last monthes income: ")  #შეგვყავს პაციენტის პირადი ნომერი ან UID, გამოდის ქვე მენიუ სადაც ვირჩევთ თუ რა კვლევა უნდა ჩაუტარდეს პაციენტს, 
+                           #პროგრამა გვეკითხება დავამატოთ თუ არა ერთის გარდა კიდევ სხვა კვლევა. შემდეგ იღებს მონაცემებს წინასწარ გამზადებული ბაზიდან. ანგარიშობს გადასახდელ თანხას 
+                           #და ბეჭდავს ინფორმაციას. ამატებს პაციენტის ისტორიას კვლევების შესახებ მონაცემებს.
+                  
+            print("5. Exit")
+
+
+            choice = input("Please choose an option: ")
+            if choice == "5":
+                break
+            else:
+                self.menu_select(choice)
+
+    def get_user_choice(self):
+        choice = input("Please choose an option: ")
+        return choice
+
+    def menu_select(self, choice):
+        if choice == "1":
+            pass
+            #Services.calculate_total_cost()
+        elif choice == "2":
+            pass
+            #Salaries.calculate_salary()
+        elif choice == "3":
+            pass
+            #Services.view_all_services()
+        elif choice == "4":
+           pass
+            #Services.calculate_income()
+        elif choice == "5":
+            
+            print("Exiting the system. Goodbye!")
+        else:
+            print("Invalid choice, please try again.")
+
+#დავალებების მენიუ
+
+
+class TasksSubMenu:
+           
+    def display(self):
+        for key, value in self.menu.items():
+            print(f"{key}: {value}")
+    def get_user_choice(self):
+        choice = input("Please choose an option: ")
+        return choice
+
+    def menu_select(self, choice):
+        if choice == "1":
+            Tasks.create_task()
+        elif choice == "2":
+            Tasks.remove_task()
+        elif choice == "3":
+            Tasks.view_all_tasks()
+        elif choice == "4":
+            Tasks.view_persons_tasks()
+        elif choice == "5":
+            print("Exiting the system. Goodbye!")
+        else:
+            print("Invalid choice, please try again.")
 """
 #ექიმის მენიუ
 
@@ -75,7 +248,7 @@ class DoctorMenu:
             print(f"{key}: {value}")
 """
 #კვლევების მენიუ
-
+"""
 class ResearchesMenu:
     def __init__(self):
         self.menu = SUB_menu_researches
@@ -89,100 +262,10 @@ class ResearchesMenu:
 
     def handle_choice(self, choice):
         if choice == "1":
-            Researches.add_research_1()
+            AllServices.selec_services()
         elif choice == "2":
-            Researches.add_research_2()
-        elif choice == "3":
-            Researches.add_research_3()
-        elif choice == "4":
-            Researches.add_research_4()
-        elif choice == "5":
             print("Exiting the system. Goodbye!")
         else:
             print("Invalid choice, please try again.")
 #მენეჯმენტის მენიუ
-
-class ClinicManagementMenu:
-    def __init__(self):
-        self.menu = MENU_clinic_mangment
-        
-    def display(self):
-        for key, value in self.menu.items():
-            print(f"{key}: {value}")
-
-    def get_user_choice(self):
-        choice = input("Please choose an option: ")
-        return choice
-
-    def handle_choice(self, choice):
-        if choice == "1":
-            Staff.view_all_staff_members()
-        elif choice == "2":
-            Staff.view_support_staff_on_duty()
-        elif choice == "3":
-            Staff.view_all_staff_members()
-        elif choice == "4":
-            Staff.View_nurses_on_Duty()
-        elif choice == "5":
-            TasksSubMenu.display()
-        elif choice == "6":
-            Staff.add_staff_member()
-        elif choice == "7":
-            Staff.remove_staff_member()
-        elif choice == "8":
-            print("Exiting the system. Goodbye!")
-        else:
-            print("Invalid choice, please try again.")        
-
-#დავალებების მენიუ
-
-
-class TasksSubMenu:
-    def __init__(self):
-        self.menu = SUB_menu_tasks
-        
-    def display(self):
-        for key, value in self.menu.items():
-            print(f"{key}: {value}")
-    def get_user_choice(self):
-        choice = input("Please choose an option: ")
-        return choice
-
-    def handle_choice(self, choice):
-        if choice == "1":
-            Tasks.create_task()
-        elif choice == "2":
-            Tasks.remove_task()
-        elif choice == "3":
-            Tasks.view_all_tasks()
-        elif choice == "4":
-            Tasks.view_persons_tasks()
-        elif choice == "5":
-            print("Exiting the system. Goodbye!")
-        else:
-            print("Invalid choice, please try again.")
-#ბუღალტერის მენიუ
-class ClinicAccountingMenu:
-    def __init__(self):
-        self.menu = MENU_clinic_accounting
-        
-    def display(self):
-        for key, value in self.menu.items():
-            print(f"{key}: {value}")
-    def get_user_choice(self):
-        choice = input("Please choose an option: ")
-        return choice
-
-    def handle_choice(self, choice):
-        if choice == "1":
-            Services.calculate_total_cost()
-        elif choice == "2":
-            Salaries.calculate_salary()
-        elif choice == "3":
-            Services.view_all_services()
-        elif choice == "4":
-            Services.calculate_income()
-        elif choice == "5":
-            print("Exiting the system. Goodbye!")
-        else:
-            print("Invalid choice, please try again.")
+"""           
