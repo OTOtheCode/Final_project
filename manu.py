@@ -1,5 +1,5 @@
 from menu_items import main_manu
-from patients import Patients
+from patients import Patients, Appointments
 from staff import Staff
 from tasks import Tasks
 from generators import Generator
@@ -45,20 +45,13 @@ class RegistrationDeskMenu:
     def display(self):
         while True:
             print("1. Register new Patient: ") 
-            print("2. Open medical history: ") 
-                                     
-            print("3. Transfer patient to doctor: ")
-                                     
-            print("4. Reaserch/Service: ")   
-                           
-            print("5. View full medical history: ") 
-            print("6. View only researches: ") 
-            print("7. Register appointment : ") 
-        
-            print("8. Exit")
+            print("2. Open/view medical history: ")                         
+            print("3. Register appointment to doctor: ")                         
+            print("4. Reaserch/Service: ")         
+            print("5. Exit")
 
             choice = input("Please choose an option: ")
-            if choice == "8":
+            if choice == "5":
                     break
             else:
                 self.menu_select(choice)
@@ -69,6 +62,8 @@ class RegistrationDeskMenu:
     def menu_select(self, choice):
         self.generate = Generator()
         self.services = AllServices()
+        self.patients = Patients()
+        self.appointments = Appointments()
         if choice == "1":
             id = str(input('Please enter patients ID number: ' ))
             uid = self.generate.generate_uid(id)
@@ -79,24 +74,12 @@ class RegistrationDeskMenu:
             patient_history = str(input('please enter information about patients diseas amd cpmplains: '))
             self.patient.register(uid, name,surname, date_of_birth, insurance_covarage, patient_history)
         elif choice == "2":
-            pass
-            #Patient.open_history()
+            self.patients.open_history()
         elif choice == "3":
-            pass
-            #Patient.add_to_doctor()
+            self.appointments.make_appointment()
         elif choice == "4":
-            self.services.select_services()
-            
-        elif choice == "5":
-            pass
-            #Patient.view_hist()
+            self.services.select_services()  
         elif choice == "6":
-            pass
-            #Patient.view_research()
-        elif choice == "7":
-            pass
-            #Patient.appointment()
-        elif choice == "8":
             print("Exiting the system. Goodbye!")
         else:
             print("Invalid choice, please try again.")

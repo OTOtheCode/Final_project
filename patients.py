@@ -57,8 +57,19 @@ class Patients:
         combined_df.to_csv(file_path, sep=';', index=False,)
         print(f"Patient {name} {surname} registered successfully.")   
 
-    def open_history ():
-        pass
+    def open_history (self):
+        patient_id = input("Please enter the patient's ID: ").strip()
+        uid = 'a' + patient_id
+        self.file_path = 'patients.csv'
+        patients_df = pd.read_csv(self.file_path, delimiter=';')
+        
+        if uid not in patients_df['ID'].astype(str).str.strip().values:
+            print("Patient ID not found.")
+            return
+        
+        patient_history = patients_df.loc[patients_df['ID'].astype(str).str.strip() == uid, 'history'].iloc[0]
+        print(f"\nHistory for patient ID {uid}:")
+        print(patient_history)
            
     def add_to_doctor ():
         pass
@@ -66,6 +77,83 @@ class Patients:
         pass
     def view_research():
         pass
-    def appointment():
-        pass
-    
+
+
+class Appointments:
+    def __init__(self):
+        self.staff_file = 'staff.csv'
+        self.patients_file = 'patients.csv'
+        self.appointments_file = 'appointments.csv'
+
+    def make_appointment(self):
+        #ვიღებთ თანამშრომლების მონაცემებს
+        staff_df = pd.read_csv(self.staff_file, delimiter=';')
+
+        # ცამოწმებთ თუ რომელი ექიმია მორიგე
+        available_doctors = staff_df[(staff_df['Position'] == 'doctor') & (staff_df['status'] == 'on duty')]
+
+        if available_doctors.empty:
+            print("No doctors are currently on duty.")
+            return
+
+        # გამოგვყავს ეკრანზე მორიგე ექიმმები
+        print("Available doctors on duty:")
+        for idx, row in available_doctors.iterrows():
+            print(f"{idx + 1}: Dr. {row['Name']} {row['Surname']}")
+
+        # ვირჩევთ თ ვისთან ვწერთ პაციენტს
+        while True:
+            try:
+                doctor_choice = int(input("Select a doctor by number: ")) - 1
+                if doctor_choice < 0 or doctor_choice >= len(available_doctors):
+                    print("Invalid choice. Please choose a valid number.")
+                else:
+                    selected_doctor = available_doctors.iloc[doctor_choice]
+                    break
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+
+        # შეგვყავს პაციენტის აიდი დან ვიღებთ მონაცემებს ფაილიდან
+        patient_id = input("Enter the patient's ID: ").strip()
+        uid = 'a' + patient_id
+        
+        patients_df = pd.read_csv(self.patients_file, delimiter=';')
+        
+        patient_record = patients_df[patients_df['ID'] == uid]
+
+        if patient_record.empty:
+            print("Patient ID not found.")
+            return
+
+        patient_name = patient_record['Name'].values[0]
+        patient_surname = patient_record['Surname'].values[0]
+        patient_history = patient_record['history'].values[0]
+
+        # ვქმნით ვიზიტის ჩანიშვნის დატაფრეიმს
+        appointment_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        appointment_entry = {
+            'timestamp': appointment_time,
+            'doctor_id': selected_doctor['ID'],
+            'doctor_name': f"Dr. {selected_doctor['Name']} {selected_doctor['Surname']}",
+            'patient_id': uid,
+            'patient_name': patient_name,
+            'patient_surname': patient_surname,
+            'medical_history': patient_history
+        }
+
+        new_appointment_df = pd.DataFrame([appointment_entry])
+
+        # ვამოწმებტ ფაილის არსებობს თუ არა
+        if os.path.exists(self.appointments_file):
+            # თუ არსებობს ვკითხულობთ და ვამოწმებთ არის თ არა შიგნით ჩანაწერი და შესაბამისად ვამატებთ/ვქმნით ახალ ჩანაწერს 
+            if os.path.getsize(self.appointments_file) > 0:
+                appointments_df = pd.read_csv(self.appointments_file, delimiter=';')
+                combined_appointments_df = pd.concat([appointments_df, new_appointment_df], ignore_index=True)
+            else:
+                combined_appointments_df = new_appointment_df
+        else:
+            combined_appointments_df = new_appointment_df
+
+        combined_appointments_df.to_csv(self.appointments_file, sep=';', index=False, mode='w', header=True)
+
+        print("Appointment successfully recorded.")

@@ -1,1 +1,10 @@
 ID;Name;Surname;Position;salary;status;Assigned_task
+a01003011001;dato;kanteladze;doctor;5000;on duty;operations
+a01003011002;giorgi;chokheli;doctor;4500;not on duty;
+a01003011003;lana;gabunia;doctor;5000;on duty;appointments
+a01003011004;amirani;kereselidze;doctor;4500;not on duty;
+a01003011005;ia;kovziridze;nurse;1500;not on duty;
+a01003011006;mariami;eristavi;nurse;1500;on duty;cleaning
+a01003011007;aleqsandre;asratashvili;CEO;10000;on duty;meating contracotrs
+a01003011008;izolda;bagaturia;accountant;2000;on duty;prepare declatarions
+a01003011009;tekla;aptsiauri;logistic;2000;on duty;buy toilit papers
