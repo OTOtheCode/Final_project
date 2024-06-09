@@ -2,22 +2,28 @@ from menu_items import main_manu
 from patients import Patients
 from staff import Staff
 from tasks import Tasks
+from generators import Generator
+from services import AllServices
 
 #კლასი მთავარი მენიუ
 class MainMenu:
+    #კონსტრუქტორი
     def __init__(self):
         self.manu = main_manu
         self.registrattion_desk_menu = RegistrationDeskMenu()
         self.management_menu = ClinicManagementMenu()
         self.accounting_menu = ClinicAccountingMenu()
+    
+    #მენიუს ჩვენების ფუნქცია
     def display(self):
         for key, value in self.manu.items():
             print(f"{key}: {value}")
     
+    #არჩევანის ფუნქცია
     def get_user_choice(self):
         choice = input("Please choose an option: ")
         return choice
-
+    
     def menu_select(self, choice):
         if choice == "1":
             self.registrattion_desk_menu.display()
@@ -32,20 +38,21 @@ class MainMenu:
 
 #რეგისტრატორის მენიუ
 class RegistrationDeskMenu:
+    #კონსტრუქტორი
     def __init__(self):
         self.patient = Patients()
            
     def display(self):
         while True:
-            print("1. Register new Patient") 
-            print("2. Open medical history") 
+            print("1. Register new Patient: ") 
+            print("2. Open medical history: ") 
                                      
-            print("3. Transfer patient to doctor")
+            print("3. Transfer patient to doctor: ")
                                      
-            print("4. Reaserch Service")   
+            print("4. Reaserch/Service: ")   
                            
-            print("5. View full medical history") 
-            print("6. View only researches") 
+            print("5. View full medical history: ") 
+            print("6. View only researches: ") 
             print("7. Register appointment : ") 
         
             print("8. Exit")
@@ -60,20 +67,17 @@ class RegistrationDeskMenu:
         return choice
 
     def menu_select(self, choice):
-        
+        self.generate = Generator()
+        self.services = AllServices()
         if choice == "1":
-            id_inp = input('Please enter patients ID number: ' )
-            if id_inp.startswith('0'):
-                id=id_inp
-            else:
-                id=int(id_inp)
-                       
+            id = str(input('Please enter patients ID number: ' ))
+            uid = self.generate.generate_uid(id)
             name = str(input('Please enter patients name: '))
             surname =str(input('Please enter patients surname: '))
             date_of_birth = input('please enter date of birth (y-m-d): ')
             insurance_covarage = int(input('Please enter patients insurance covarage: '))
             patient_history = str(input('please enter information about patients diseas amd cpmplains: '))
-            self.patient.register(id, name,surname, date_of_birth, insurance_covarage, patient_history)
+            self.patient.register(uid, name,surname, date_of_birth, insurance_covarage, patient_history)
         elif choice == "2":
             pass
             #Patient.open_history()
@@ -81,9 +85,8 @@ class RegistrationDeskMenu:
             pass
             #Patient.add_to_doctor()
         elif choice == "4":
+            self.services.select_services()
             
-            pass
-            #ResearchesMenu.display()
         elif choice == "5":
             pass
             #Patient.view_hist()
@@ -101,6 +104,7 @@ class RegistrationDeskMenu:
 #მენეჯმენტის მენიუ
 
 class ClinicManagementMenu:
+    #კონსტრუქტორი
     def __init__(self):
         self.staff = Staff()       
     def display(self):
@@ -142,12 +146,7 @@ class ClinicManagementMenu:
         elif choice == "5":
             TasksSubMenu.display()
         elif choice == "6":
-            id_inp = input('Please enter ID number: ' )
-            if id_inp.startswith('0'):
-                id=id_inp
-            else:
-                id=int(id_inp)
-                     
+            id = input('Please enter ID number: ' )        
             name = str(input('Please enter name: ').lower())
             surname =str(input('Please enter  surname: ').lower())
             position = input('Please enter position: ').lower()

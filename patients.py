@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime
-
 import os
+
 patient_columns = [
     'ID', 
     'Name', 
@@ -10,18 +10,21 @@ patient_columns = [
     'Age', 
     'Insurance covarage', 
     'history']
-
+#პაციენტის კლასი
 class Patients:
     
     def __init__(self):
-       pass #self.check_file = Validator()
+       pass 
     
+    #ასაკის დაანგარეიშების ფუნქცია
     def calculate_age (self, date_of_birth):
         today = datetime.today()
         disp = datetime.strptime(date_of_birth, "%Y-%m-%d")
         return today.year - disp.year - ((today.month, today.day)<(disp.month,disp.day))
     
+    #პაციენტის რეგისტრაციის ფუნქცია
     def register (self,id,name,surname,date_of_birth,insurance_covarage, patient_history):
+        #ვსაზღვრავთ მონაცემებს
         self.id = id
         self.name = name
         self.surname = surname
@@ -40,25 +43,23 @@ class Patients:
             'history': self.history
         }
         file_path = 'patients.csv'
+        #ვამოწმებთ ცარიელი არის თუ არა ფაილი, თუ ცარიელი ვბეჭდავთ კოლონის სათაურებს ჯერ. თუ არა ვტოვებთ და მხოლოდ პაციენტის მონაცემებს ვამატებთ
         if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
             existing_df = pd.read_csv(file_path, sep=';')
         else:
             existing_df = pd.DataFrame(columns=patient_columns)
         
-        # Convert the patient data dictionary to a DataFrame
-        
+        #გადაგვაქვს პაციენტის მონაცემები დატაფრეიმში  და ვაკეთებთ არსებულის და ახალი დატაფრემის კონკანაციას.  
         patient_df = pd.DataFrame([patient_data])
-        
-        # Concatenate the existing DataFrame with the new patient DataFrame
         combined_df = pd.concat([existing_df, patient_df], ignore_index=True)
         
-        # Save the updated DataFrame back to the CSV file
+        #ვინახავთ ფაილში
         combined_df.to_csv(file_path, sep=';', index=False,)
         print(f"Patient {name} {surname} registered successfully.")   
 
     def open_history ():
         pass
-            #patient_df = pd.read_csv(patients)
+           
     def add_to_doctor ():
         pass
     def view_hist():

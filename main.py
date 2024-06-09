@@ -1,5 +1,5 @@
 from menu_items import main_manu
-from manu import MainMenu,RegistrationDeskMenu,ClinicAccountingMenu,ClinicManagementMenu
+from manu import MainMenu
 
 def main():
     main_menu = MainMenu()  # Instantiate the MainMenu class
