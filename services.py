@@ -2,12 +2,13 @@ import pandas as pd
 from insurance import Insurance
 from datetime import datetime
 import os
+from generators import Generator
 class AllServices:
     def __init__(self):
         pass
     #მომსახურების მიბმა პაციენტზე მისი სადაზღვეო ლიმიტის გათვალისწინებით
     def select_services(self):
-        #ფუნქციის ბაზები .csv ფილები
+        self.id = Generator
         selected_services = []
         service_file = 'services.csv'
         patient_file = 'patients.csv'
@@ -15,7 +16,7 @@ class AllServices:
         #პაციენტის აიდის შეყვანა
         patient_id = input("Please enter the patient's ID: ").strip()  
         
-        uid = 'a' + patient_id
+        uid = self.id.generate_uid(patient_id)
         
         #პაციენტის ფაილის წაკითხვა და დატაფრეიმში გადაყვანა
         patients_df = pd.read_csv(patient_file, delimiter=';')

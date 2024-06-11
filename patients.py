@@ -1,7 +1,8 @@
 import pandas as pd
 from datetime import datetime
 import os
-
+from generators import Generator
+from validators import Validator
 patient_columns = [
     'ID', 
     'Name', 
@@ -10,12 +11,14 @@ patient_columns = [
     'Age', 
     'Insurance covarage', 
     'history']
+
 #პაციენტის კლასი
+
 class Patients:
     
     def __init__(self):
-       pass 
-    
+       #self.validator = Validator()
+        pass
     #ასაკის დაანგარეიშების ფუნქცია
     def calculate_age (self, date_of_birth):
         today = datetime.today()
@@ -25,6 +28,13 @@ class Patients:
     #პაციენტის რეგისტრაციის ფუნქცია
     def register (self,id,name,surname,date_of_birth,insurance_covarage, patient_history):
         #ვსაზღვრავთ მონაცემებს
+       
+        #try:
+            #self.validator.validate_patient(self.id)
+        #except ValueError:
+           # print("Returning to main menu.")
+            #return
+        
         self.id = id
         self.name = name
         self.surname = surname
@@ -56,7 +66,8 @@ class Patients:
         #ვინახავთ ფაილში
         combined_df.to_csv(file_path, sep=';', index=False,)
         print(f"Patient {name} {surname} registered successfully.")   
-
+    
+    #მხოლოდ პაციენტის ისტორიის მოდული
     def open_history (self):
         patient_id = input("Please enter the patient's ID: ").strip()
         uid = 'a' + patient_id
@@ -70,13 +81,6 @@ class Patients:
         patient_history = patients_df.loc[patients_df['ID'].astype(str).str.strip() == uid, 'history'].iloc[0]
         print(f"\nHistory for patient ID {uid}:")
         print(patient_history)
-           
-    def add_to_doctor ():
-        pass
-    def view_hist():
-        pass
-    def view_research():
-        pass
 
 
 class Appointments:

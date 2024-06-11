@@ -6,30 +6,20 @@ from data_structure import patient_columns, patient_history_columns,staff_column
 
 class FileManager:
     def __init__(self, file_n):
-        self.file_n = file_n
-        self.df = pd.DataFrame()
-        
+        pass
     
     def create_file(self, specific_columns): #კოლონების სახელებს აიღებს იმს დამიხედვით თ რა ფაილს ქმნის
-        self.df = pd.DataFrame(columns=specific_columns)
-        self.df.to_csv(self.file_n, index=False)
+        pass
 
     def add_to_file(self, data): #data რაც უნდა დაემატოს
-        new_df = pd.DataFrame(data)
-        self.df = pd.concat([self.df, new_df], ignore_index=True)
-        self.df.to_csv(self.file_n, index=False)
+        pass
 
     def remove_from_file (self, ID):
-        self.df = pd.read_csv(self.file_n)
-        self.df = self.df[self.df['ID']!=ID]
-        self.df.to_csv(self.file_n, index = False)
+        pass
 
     def update_information_in_file (self, ID, new_data):
-        self.df = pd.read_csv(self.file_n)
-        self.df.loc[self.df['ID']==ID] = new_data
-        self.df.to_csv(self.file_n, index = False)
+        pass
         
     def read_file (self):
-        self.df = pd.read_csv(self.file_n)
-        return self.df
+        pass
 """
