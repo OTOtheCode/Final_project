@@ -8,7 +8,7 @@ class AllServices:
         pass
     #მომსახურების მიბმა პაციენტზე მისი სადაზღვეო ლიმიტის გათვალისწინებით
     def select_services(self):
-        self.id = Generator
+        self.id = Generator()
         selected_services = []
         service_file = 'services.csv'
         patient_file = 'patients.csv'
@@ -34,9 +34,7 @@ class AllServices:
         #ვკითხულობთ სერვის ფაილს. და გადაგვაქვს დატაფრეიმში
         df = pd.read_csv(service_file, delimiter=';')  
         
-        #print("Header Row:")
-        #print(df.columns.tolist())  
-        
+         
         #ვბეჭდავთ სერვისების სიას
         print("\nList of Services:")
         for idx, row in df.iterrows():

@@ -1,3 +1,5 @@
+
+#სადაზღვეო დაფარვის გამოკლების დაანგარიშების მოდული
 class Insurance:
     
     def __init__(self, coverage_percentage):

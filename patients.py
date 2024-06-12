@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 import os
 from generators import Generator
-from validators import Validator
+#from validators import Validator
 patient_columns = [
     'ID', 
     'Name', 
@@ -28,12 +28,7 @@ class Patients:
     #პაციენტის რეგისტრაციის ფუნქცია
     def register (self,id,name,surname,date_of_birth,insurance_covarage, patient_history):
         #ვსაზღვრავთ მონაცემებს
-       
-        #try:
-            #self.validator.validate_patient(self.id)
-        #except ValueError:
-           # print("Returning to main menu.")
-            #return
+      
         
         self.id = id
         self.name = name
