@@ -10,13 +10,9 @@ Each of these has/will have dedicated functions:
 2. from clinic management dashboard. operator can monitor staff operations, view personal on duty, add/remove staff members, create and assigne task to staff memeber.
 3. from accouting dashboard. accountatns can gather infromation about salaries, procedures, costs, monthely incomes etc. 
 
-all information is saved in CSV filesas tables using. Also from these csv files we take what we need for separate function. Information in files are apdated, removed, appended. etc. we used pandas.
+all information is saved in CSV files as tables. Also from these csv files we take what we need for separate functions. Information in files are updated, removed, appended. etc. for this task was used pandas.
 
-Tried to use OOP as much as possible, but still not eanough: There a lot of fields to be finished like password authentications, validations, file managers. I think  through more work it will be possible to make it much more presentable.
-
-
-
-
+Tried to use OOP as much as possible, but still not eanough: There a lot of fields to be finished like password authentications, validations, file managers. I think  through more work it will be possible to make it much more presentable and functional. 
 
 
 About future of this IDEA (kind of solution):
